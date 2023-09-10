@@ -1,0 +1,68 @@
+Your organization is adopting the DevOps methodology and in order to automate provisioning of infrastructure there's a need to setup a centralised server for Jenkins.
+
+Terraform is a tool that allows you to provision various infrastructure components. Ansible is a platform for managing configurations and deploying applications. It means you'll use Terraform to build a virtual machine, for example, and then use Ansible to instal the necessary applications on that machine.
+
+Considering the Organizational requirement you are asked to automate the infrastructure using Terraform first and install other required automation tools in it.
+
+Tools required: Terraform, AWS account with security credentials, Keypair
+
+ 
+
+Expected Deliverables:
+
+    Launch an EC2 instance using Terraform
+    Connect to the instance
+    Install Jenkins, Java and Python in the instance
+
+Quick Search
+youtube video preview thumbnail
+Answer
+To automate the infrastructure using Terraform and install Jenkins, Java, and Python in the instance, follow these steps:
+Step 1: Set up AWS account and security credentials
+To use Terraform with AWS, you need to have an AWS account and security credentials. You can create an AWS account if you don't have one already. Then, create an IAM user with programmatic access and attach the necessary policies to the user. Finally, generate an access key and secret key for the user.
+Step 2: Set up Keypair
+To connect to the EC2 instance, you need to set up a keypair. You can create a keypair in the AWS console or using the AWS CLI.
+Step 3: Install Terraform
+Download and install Terraform on your local machine.
+Step 4: Write Terraform code
+Create a new directory for your Terraform code and create a file named main.tf. In this file, write the code to launch an EC2 instance. Here's an example:
+
+provider "aws" {
+  access_key = "ACCESS_KEY"
+  secret_key = "SECRET_KEY"
+  region     = "us-east-1"
+}
+
+resource "aws_instance" "jenkins" {
+  ami           = "ami-0c94855ba95c71c99"
+  instance_type = "t2.micro"
+  key_name      = "KEYPAIR_NAME"
+  tags = {
+    Name = "Jenkins Instance"
+  }
+}
+
+Replace ACCESS_KEY and SECRET_KEY with your AWS access key and secret key. Replace KEYPAIR_NAME with the name of your keypair.
+Step 5: Initialize and apply Terraform code
+In your terminal, navigate to the directory where you saved your Terraform code and run the following commands:
+
+terraform init
+terraform apply
+
+Terraform will initialize and apply your code. It will create an EC2 instance in your AWS account.
+Step 6: Connect to the instance
+To connect to the instance, use SSH and the keypair you created earlier. Here's an example command:
+
+ssh -i KEYPAIR_FILE ec2-user@INSTANCE_PUBLIC_IP
+
+Replace KEYPAIR_FILE with the path to your keypair file. Replace INSTANCE_PUBLIC_IP with the public IP address of your instance.
+Step 7: Install Jenkins, Java, and Python
+Once you're connected to the instance, you can install Jenkins, Java, and Python using the package manager. Here are the commands:
+
+sudo yum update -y
+sudo yum install -y java-1.8.0-openjdk-devel
+sudo amazon-linux-extras install epel -y
+sudo yum install -y python3-pip
+sudo pip3 install jenkins
+
+These commands will update the package manager, install Java, enable the EPEL repository, install Python, and install Jenkins using pip. That's it! You've now launched an EC2 instance using Terraform, connected to the instance, and installed Jenkins, Java, and Python. You can now use Jenkins to automate your infrastructure further.
